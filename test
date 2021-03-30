@@ -1,0 +1,105 @@
+# filter: 过滤一个可迭代对象，将满足条件的取出，组合成新的可迭代对象
+#   参数一： 必须拥有一个参数的函数，用于指定过滤的规则
+#   参数二： 需要被过滤的可迭代对象(能够放到 for 中的对象)
+# 要求将传入的字符串中，所有的大写字母都过滤出来
+
+def isupper(value: str) -> bool:
+    return value.isupper()
+#将小写的字符过滤出来
+def islow(value: str) -> bool:
+    return value.islower()
+#自定义实现高阶函数
+def my_filter(function, iterator) -> list:
+    new_list = []
+    for item in iterator:
+        if function(item) == True:
+            new_list.append(item)
+    return new_list
+
+
+def my_func(a,b):
+    mylist=[]
+    mylist.append(a+b)
+    mylist.append(a-b)
+    mylist.append(a*b)
+    mylist.append(a//b)
+    return mylist
+
+print(my_func(9,3))
+
+
+
+def my_func2(a,b):
+    mylist={}
+    mylist["+"]=a+b
+    mylist["-"]=a-b
+    mylist["*"]=a*b
+    mylist["//"]=a//b
+    return mylist
+
+print(my_func2(9,3))
+
+
+
+
+
+
+def myfun(num):
+    listm=[1,1]
+    if num<=1:
+        return listm
+    else:
+        for i in range(2,num+1):
+            listm.append(listm[i-1]+listm[i-2])
+    return listm
+
+print(myfun(5))
+
+
+
+
+print(list(filter(isupper, "AaBcDeFghIjKLmn")))
+print(list(filter(islow, "AaBcDeFghIjKLmn")))
+print(my_filter(isupper, "AaBcDeFghIjKLmn"))
+
+
+import functools
+# reduce: 将可迭代对象中的所有元素按照特定的算法进行运算，得出结果
+#   参数一： 拥有两个参数的函数，提供了基本的运算规则
+#   参数二： 需要进行运算的可迭代序列
+def add(a, b):
+    return a + b
+def mul(a, b):
+    return a * b
+# 在运行程序的时候，首先将前两个元素放置到 add 中，接下来将函数的
+#   结果，和下一个元素再次放入计算，直到序列内所有元素计算完毕
+def my_fun(num):
+    return  functools.reduce(add, range(1,num+1))
+
+
+print(my_fun(5))
+
+print(functools.reduce(add, range(1,5+1)))
+print(functools.reduce(mul, range(1, 11)))
+
+
+# map: 将所有传入序列的指定位置元素放置到函数中，将结果组成新的序列
+#   参数一：指定算法的函数，要求函数的参数个数和序列个数相同
+#   参数二~N: 传入的序列
+def rep_str(number, string):
+    return number * string
+print(list(map(rep_str, [1, 2, 3], "123")))
+
+
+# 匿名函数: lambda 参数1,参数n: 唯一的语句用作返回值
+add = lambda a, b: a * b
+print(add(10, 20))
+
+# 使用 lambda 实现上述的内置函数功能
+print(list(filter(lambda s: s.isupper(), "AaBcDeFghIjKLmn")))
+print(list(filter(lambda s: s.islower(), "AaBcDeFghIjKLmn")))
+
+print(functools.reduce(lambda a, b: a * b, range(1, 11)))
+print(functools.reduce(lambda a, b: a + b, range(1, 11)))
+
+print(list(map(lambda a, b: a * b, [1, 2, 3], "123")))
